@@ -1,18 +1,18 @@
 
 
-def findall(string: str, substring: str):
+def findall(string: str, substring: str) -> list[int]:
     """
     find index(s) of substring in string
     :param string: string to search
     :param substring: character to search for
     :return: indices of substring
     """
-    find_list = [i for i in range(len(string)) if string[i] == substring]
+    find_list = [i for i, c in enumerate(string) if c == substring]
 
     return find_list
 
 
-def remove(g: str, ms: str, w: str):
+def remove(g: str, ms: str, w: str) -> str:
     """
     removes redundant yellow letters from response
     :param g: guessed word
@@ -35,22 +35,22 @@ def remove(g: str, ms: str, w: str):
     return ms
 
 
-def checker(guess: str, answer: str):
+def checker(guess: str, answer: str) -> str:
     """
     gives a response to a guess
     :param guess: guessed word
     :param answer: actual word
     :return: string of G, Y, and -
     """
-    MyString = ''
+    my_string = ''
     for i in range(len(guess)):
         if i < len(answer) and guess[i] == answer[i]:
-            MyString += 'G'
+            my_string += 'G'
         elif answer.find(guess[i]) != -1:  # add clause for multiple of same letter
-            MyString += 'Y'
+            my_string += 'Y'
         else:
-            MyString += '-'
-    MyString = remove(guess, MyString, answer)
-    return MyString
+            my_string += '-'
+    my_string = remove(guess, my_string, answer)
+    return my_string
 
 

@@ -1,5 +1,5 @@
 import pygame
-from painfle import engine
+from painfle import Engine
 
 
 def findall(string: str, substring: str):
@@ -128,7 +128,7 @@ def main():
     SUBTITLE = pygame.font.SysFont('Agency FB', 20)
     pygame.display.set_caption('PAINFLE')
 
-    e = engine()
+    e = Engine()
 
     while run:
         clock.tick(FPS)

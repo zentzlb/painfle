@@ -2,27 +2,35 @@ import pygame
 import random as rnd
 import numpy as np
 import math
-from painfle import engine
+from painfle import Engine
+
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
+PURPLE = (255, 0, 255)
+WHITE = (255, 255, 255)
+GRAY = (100, 100, 100)
 
 
 def main():
-
     pygame.font.init()
 
-    FPS = 60
+    fps = 60
     run = True
     clock = pygame.time.Clock()
-    WIDTH, HEIGHT = 800, 800
-    WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-    FONT = pygame.font.SysFont('Agency FB', 40)
-    TITLE = pygame.font.SysFont('Agency FB', 60)
-    SUBTITLE = pygame.font.SysFont('Agency FB', 20)
+    width, height = 800, 800
+    win = pygame.display.set_mode((width, height))
+    font = pygame.font.SysFont('Agency FB', 40)
+    title = pygame.font.SysFont('Agency FB', 60)
+    subtitle = pygame.font.SysFont('Agency FB', 20)
     pygame.display.set_caption('PAINFLE')
 
-    e = engine()
+    e = Engine()
 
     while run:
-        clock.tick(FPS)
+        clock.tick(fps)
         e.tic()
         # fps = clock.get_fps()
         for event in pygame.event.get():
@@ -38,22 +46,14 @@ def main():
                         e.respond()
                         print(e.used_words)
                     else:
-                        e.counter = FPS
+                        e.counter = fps
                 elif event.unicode.isprintable() and len(e.text) < e.word_len:
                     e.text += event.unicode.lower()
 
-        draw_window(WIN, WIDTH, HEIGHT, FONT, TITLE, SUBTITLE, e)
+        draw_window(win, width, height, font, title, subtitle, e)
 
 
 def draw_window(win, width, height, font, title, subtitle, e):
-    BLACK = (0, 0, 0)
-    RED = (255, 0, 0)
-    BLUE = (0, 0, 255)
-    GREEN = (0, 255, 0)
-    YELLOW = (255, 255, 0)
-    PURPLE = (255, 0, 255)
-    WHITE = (255, 255, 255)
-    GRAY = (100, 100, 100)
     win.fill(WHITE)
 
     rx = 50
@@ -70,15 +70,16 @@ def draw_window(win, width, height, font, title, subtitle, e):
     win.blit(text_surface, (xt, yt))
 
     if len(e.responses) > 1 and e.responses[-1] == 'GGGGG':
-            text_surface = subtitle.render('press esc to play again', True, BLACK)
-            xt = width / 2 - text_surface.get_width() / 2
-            yt = 80
-            win.blit(text_surface, (xt, yt))
+        text_surface = subtitle.render('press esc to play again', True, BLACK)
+        xt = width / 2 - text_surface.get_width() / 2
+        yt = 80
+        win.blit(text_surface, (xt, yt))
     elif len(e.responses) == 6:
-            text_surface = subtitle.render(f'Better luck next time! The word was "{e.used_words[0]}," press esc to play again', True, BLACK)
-            xt = width / 2 - text_surface.get_width() / 2
-            yt = 80
-            win.blit(text_surface, (xt, yt))
+        text_surface = subtitle.render(f'Better luck next time! The word was "{e.used_words[0]}," '
+                                       f'press esc to play again', True, BLACK)
+        xt = width / 2 - text_surface.get_width() / 2
+        yt = 80
+        win.blit(text_surface, (xt, yt))
 
     for w in range(e.max_guesses):
         for c in range(e.word_len):
@@ -99,14 +100,13 @@ def draw_window(win, width, height, font, title, subtitle, e):
                     dx = 5 * ((e.counter // 5) % 2 - 0.5)
                 else:
                     dx = 0
-                pygame.draw.rect(win, BLACK, (x+dx, y, rx, ry), width=wrec)
+                pygame.draw.rect(win, BLACK, (x + dx, y, rx, ry), width=wrec)
                 text_surface = font.render(e.text[c].upper(), True, BLACK)
                 xt = x + rx / 2 - text_surface.get_width() / 2 + dx
                 yt = y + ry / 2 - text_surface.get_height() / 2
                 win.blit(text_surface, (xt, yt))
             else:
                 pygame.draw.rect(win, BLACK, (x, y, rx, ry), width=wrec)
-
 
     height2 = len(e.letters) * (ry + sep)
     for i in range(len(e.letters)):
@@ -125,11 +125,9 @@ def draw_window(win, width, height, font, title, subtitle, e):
             yt = y + ry / 2 - text_surface.get_height() / 2
             win.blit(text_surface, (xt, yt))
 
-
     pygame.display.update()
 
 
 if __name__ == '__main__':
     main()
     pygame.quit()
-

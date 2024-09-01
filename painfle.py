@@ -1,7 +1,7 @@
-from functions import *
+from functions import checker
 
 
-class engine:
+class Engine:
     def __init__(self):
         file1 = open('words.txt', 'r')
         file2 = open('curated.txt', 'r')
@@ -16,7 +16,6 @@ class engine:
         self.letters = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']
         self.colors = {}
         self.counter = 0
-
 
     def reset(self):
         file2 = open('curated.txt', 'r')
@@ -50,7 +49,8 @@ class engine:
         self.used_words = max(d.values(), key=len)
         response = checker(self.text, self.used_words[0])
         for i in range(len(response)):
-            if self.text[i] not in self.colors or response[i] < self.colors[self.text[i]]:
+            if (self.text[i] not in self.colors or
+                    ((c := response[i]) < self.colors[self.text[i]] and c != '-')):
                 self.colors[self.text[i]] = response[i]
 
         self.n += 1
