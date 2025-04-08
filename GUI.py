@@ -83,7 +83,6 @@ def draw_window(win, width, height, font, title, subtitle, e):
 
     for w in range(e.max_guesses):
         for c in range(e.word_len):
-
             x = width2 * c / e.word_len + (width - width2) / 2
             y = height2 * w / e.max_guesses + (height - height2) / 2
 

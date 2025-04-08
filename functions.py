@@ -29,7 +29,7 @@ def remove(g: str, ms: str, w: str) -> str:
                     num -= 1
             for j in ind_list:
                 if ms[j] == 'Y' and num == 0:
-                    ms = ms[:j] + '-' + ms[j+1:]
+                    ms = ms[:j] + '-' + ms[j + 1:]
                 elif ms[j] == 'Y':
                     num -= 1
     return ms
