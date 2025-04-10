@@ -13,6 +13,12 @@ PURPLE = (255, 0, 255)
 WHITE = (255, 255, 255)
 GRAY = (100, 100, 100)
 
+RX = 50
+RY = 50
+SEP = 10
+REC_WIDTH = 3
+COLORS = {'G': GREEN, 'Y': YELLOW, '-': GRAY}
+
 
 def main():
     pygame.font.init()
@@ -44,9 +50,10 @@ def main():
                 elif event.key == pygame.K_RETURN and len(e.text) == e.word_len:
                     if e.text in e.full_words and e.text not in e.guesses:
                         e.respond()
-                        print(e.used_words)
                     else:
                         e.counter = fps
+                elif event.key == pygame.K_PRINT:
+                    print(e.used_words)
                 elif event.unicode.isprintable() and len(e.text) < e.word_len:
                     e.text += event.unicode.lower()
 
@@ -55,14 +62,8 @@ def main():
 
 def draw_window(win, width, height, font, title, subtitle, e):
     win.fill(WHITE)
-
-    rx = 50
-    ry = 50
-    sep = 10
-    wrec = 3
-    color_dict = {'G': GREEN, 'Y': YELLOW, '-': GRAY}
-    width2 = e.word_len * (rx + sep)
-    height2 = e.max_guesses * (ry + sep)
+    width2 = e.word_len * (RX + SEP)
+    height2 = e.max_guesses * (RY + SEP)
 
     text_surface = title.render('PAINFLE', True, BLACK)
     xt = width / 2 - text_surface.get_width() / 2
@@ -87,41 +88,41 @@ def draw_window(win, width, height, font, title, subtitle, e):
             y = height2 * w / e.max_guesses + (height - height2) / 2
 
             if w < len(e.guesses):
-                color = color_dict[e.responses[w][c]]
-                pygame.draw.rect(win, color, (x, y, rx, ry))
-                pygame.draw.rect(win, BLACK, (x, y, rx, ry), width=wrec)
+                color = COLORS[e.responses[w][c]]
+                pygame.draw.rect(win, color, (x, y, RX, RY))
+                pygame.draw.rect(win, BLACK, (x, y, RX, RY), width=REC_WIDTH)
                 text_surface = font.render(e.guesses[w][c].upper(), True, BLACK)
-                xt = x + rx / 2 - text_surface.get_width() / 2
-                yt = y + ry / 2 - text_surface.get_height() / 2
+                xt = x + RX / 2 - text_surface.get_width() / 2
+                yt = y + RY / 2 - text_surface.get_height() / 2
                 win.blit(text_surface, (xt, yt))
             elif w == len(e.guesses) and c < len(e.text):
                 if e.counter > 0:
                     dx = 5 * ((e.counter // 5) % 2 - 0.5)
                 else:
                     dx = 0
-                pygame.draw.rect(win, BLACK, (x + dx, y, rx, ry), width=wrec)
+                pygame.draw.rect(win, BLACK, (x + dx, y, RX, RY), width=REC_WIDTH)
                 text_surface = font.render(e.text[c].upper(), True, BLACK)
-                xt = x + rx / 2 - text_surface.get_width() / 2 + dx
-                yt = y + ry / 2 - text_surface.get_height() / 2
+                xt = x + RX / 2 - text_surface.get_width() / 2 + dx
+                yt = y + RY / 2 - text_surface.get_height() / 2
                 win.blit(text_surface, (xt, yt))
             else:
-                pygame.draw.rect(win, BLACK, (x, y, rx, ry), width=wrec)
+                pygame.draw.rect(win, BLACK, (x, y, RX, RY), width=REC_WIDTH)
 
-    height2 = len(e.letters) * (ry + sep)
+    height2 = len(e.letters) * (RY + SEP)
     for i in range(len(e.letters)):
         line = e.letters[i]
-        width2 = len(line) * (rx + sep)
+        width2 = len(line) * (RX + SEP)
         for j in range(len(line)):
             c = line[j]
             x = width2 * j / len(line) + (width - width2) / 2
             y = height2 * i / len(e.letters) + (height - height2) / 2 + 300
             if c in e.colors:
-                color = color_dict[e.colors[c]]
-                pygame.draw.rect(win, color, (x, y, rx, ry))
-            pygame.draw.rect(win, BLACK, (x, y, rx, ry), width=wrec)
+                color = COLORS[e.colors[c]]
+                pygame.draw.rect(win, color, (x, y, RX, RY))
+            pygame.draw.rect(win, BLACK, (x, y, RX, RY), width=REC_WIDTH)
             text_surface = font.render(c.upper(), True, BLACK)
-            xt = x + rx / 2 - text_surface.get_width() / 2
-            yt = y + ry / 2 - text_surface.get_height() / 2
+            xt = x + RX / 2 - text_surface.get_width() / 2
+            yt = y + RY / 2 - text_surface.get_height() / 2
             win.blit(text_surface, (xt, yt))
 
     pygame.display.update()

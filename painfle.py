@@ -43,8 +43,8 @@ class Engine:
             else:
                 d[r] = [word]
             # print(d.values())
-        for key in d.keys():
-            print(f'{key}: {len(d[key])}')
+        # for key in d.keys():
+        #     print(f'{key}: {len(d[key])}')
 
         self.used_words = max(d.values(), key=len)
         response = checker(self.text, self.used_words[0])
